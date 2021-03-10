@@ -1,3 +1,9 @@
+import { Container } from "./Container";
+
 export const Public = () => {
-  return <div>Public</div>;
+  return (
+    <Container>
+      <h1>Public route</h1>
+    </Container>
+  );
 };
