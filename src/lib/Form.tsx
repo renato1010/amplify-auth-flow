@@ -86,18 +86,18 @@ export const Form = ({
             formState={formState}
           />
         );
-      case "confirmSignUp":
-        return (
-          <ConfirmSignUp
-            confirmSignUP={() => confirmSignUp(formState, updateFormType)}
-            updateFormState={(e) => updateForm(e)}
-          />
-        );
       case "signIn":
         return (
           <SignIn
             formState={formState}
             signIn={onSignIn}
+            updateFormState={(e) => updateForm(e)}
+          />
+        );
+      case "confirmSignUp":
+        return (
+          <ConfirmSignUp
+            confirmSignUP={() => confirmSignUp(formState, updateFormType)}
             updateFormState={(e) => updateForm(e)}
           />
         );

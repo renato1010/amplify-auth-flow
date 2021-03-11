@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+## AWS Amplify Authentication flow
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To show a typical Authentication flow, a basic React app with 3 routes, home, profile and secured Route  
+it's in the profile route where we show forms for auth:
 
-## Available Scripts
+- Sign In
+- Sign Up
+- Confirm Sign Up
+- Forgot Password
+- Forgot Password Submit
 
-In the project directory, you can run:
+And _Sign Out_ button to log out.
 
-### `npm start`
+![Authentication flow](https://icons-images.s3.us-east-2.amazonaws.com/screencasts/signUp_signIn_Peek+2021-03-11+08-48.gif)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Note
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You will need an AWS acc. and also need some keys to configure the project, watch this [video](https://youtu.be/fWbM5DLh25U)  
+to learn how to configure the Amplify CLI
 
-### `npm test`
+## Credits
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This example and code is based on book **Full Stack Serverless** by [Nader Dabit](https://twitter.com/dabit3)  
+I changed the project a bit using `Typescript` insted of `JavaScript` on code examples, and other minor changes  
+_node-fetch_ instead of _Axios_. and other UI adds on  
+AWS Amplify will generete the `src/aws-exports.js` file that you will need to configure the React client App
 
-### `npm run build`
+## Functionality
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The workhorse is **Auth** class and the core functionality is exposed at: `src/lib/utilities/auth.ts`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```ts
+export async function signIn(
+  { username, password }: FormStateType,
+  setUser: (user: CognitoUserInfo) => void
+): Promise<void> {
+  try {
+    const { attributes, username: signedUsername } = await Auth.signIn(
+      username,
+      password
+    );
+    const userInfo: CognitoUserInfo = {
+      username: signedUsername,
+      ...attributes,
+    };
+    setUser(userInfo);
+  } catch (error) {
+    console.log("error signing in: ", error);
+    throw new Error(`At Signing in: ${error?.message ?? error.toString()}`);
+  }
+}
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+export async function signUp(
+  { username, password, email }: FormStateType,
+  updateFormType: (type: FormType) => void
+): Promise<void> {
+  try {
+    await Auth.signUp({ username, password, attributes: { email } });
+    console.log("sign up success!");
+    updateFormType("confirmSignUp");
+  } catch (error) {
+    console.log("error signing up: ", error);
+    throw new Error(`At signing up: ${error?.message ?? error.toString()}`);
+  }
+}
+```
 
-### `npm run eject`
+Then the _Form_ component (src/lib/Form.tsx) will keep track of the state to show the right form block
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```ts
+  const renderForm = (): JSX.Element | null => {
+    switch (formType) {
+      case "signUp":
+        return (
+          <SignUp
+            signUp={onSignUp}
+            updateFormState={(e) => updateForm(e)}
+            formState={formState}
+          />
+        );
+      case "signIn":
+        return (
+          <SignIn
+            formState={formState}
+            signIn={onSignIn}
+            updateFormState={(e) => updateForm(e)}
+          />
+        );
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
