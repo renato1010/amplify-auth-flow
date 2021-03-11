@@ -1,20 +1,14 @@
-import { useEffect } from "react";
-import { Auth } from "aws-amplify";
 import { Container } from "./Container";
 import { RouteComponentProps } from "react-router-dom";
+import { protectedRoute } from "../protectedRoute";
 
 // type ProtectedTypeProps = RouteComponentProps | {};
-export const Protected = ({ history }: RouteComponentProps<{}>) => {
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then((user) => console.log({ user }))
-      .catch(() => {
-        history.push("/profile");
-      });
-  }, [history]);
+const Protected = ({ history }: RouteComponentProps<{}>) => {
   return (
     <Container>
       <h1>Protected route</h1>
     </Container>
   );
 };
+
+export const ProtectedProtected = protectedRoute(Protected);

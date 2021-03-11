@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { HashRouter, Switch, Route } from "react-router-dom";
-import { Public, Protected, Nav, ProfileWAuthenticator as Profile } from ".";
+import { Public, ProtectedProtected as Protected, Nav, Profile } from ".";
 
 export const Router = () => {
   const [current, setCurrent] = useState("home");
