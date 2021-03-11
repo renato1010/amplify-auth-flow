@@ -1,21 +1,23 @@
 import { ChangeEvent } from "react";
 import { Button, styles, loadingIcon } from ".";
+import { FormStateType } from "./Form";
 
 type SignUpPropsType = {
   signUp: () => void;
   updateFormState: (evt: ChangeEvent<HTMLInputElement>) => void;
-  isLoading?: boolean;
+  formState: FormStateType;
 };
 
 export const SignUp = ({
   signUp,
   updateFormState,
-  isLoading,
+  formState: { isLoading, username, password, email },
 }: SignUpPropsType) => {
   return (
     <div style={styles.container}>
       <input
         name="username"
+        value={username}
         onChange={(e) => {
           e.persist();
           updateFormState(e);
@@ -26,6 +28,7 @@ export const SignUp = ({
       <input
         type="password"
         name="password"
+        value={password}
         onChange={(e) => {
           e.persist();
           updateFormState(e);
@@ -35,6 +38,7 @@ export const SignUp = ({
       />
       <input
         name="email"
+        value={email}
         onChange={(e) => {
           e.persist();
           updateFormState(e);

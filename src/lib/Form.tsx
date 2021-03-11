@@ -60,6 +60,7 @@ export const Form = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(formState)]);
+
   const onSignIn = useCallback(async () => {
     updateFormState({ ...formState, isLoading: true });
     try {
@@ -82,7 +83,7 @@ export const Form = ({
           <SignUp
             signUp={onSignUp}
             updateFormState={(e) => updateForm(e)}
-            isLoading={formState.isLoading}
+            formState={formState}
           />
         );
       case "confirmSignUp":
@@ -96,7 +97,6 @@ export const Form = ({
         return (
           <SignIn
             formState={formState}
-            // signIn={() => signIn(formState, setUser)}
             signIn={onSignIn}
             updateFormState={(e) => updateForm(e)}
           />

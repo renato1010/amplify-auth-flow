@@ -22,7 +22,7 @@ export async function signIn(
     setUser(userInfo);
   } catch (error) {
     console.log("error signing in: ", error);
-    throw new Error(`Error signing in: ${error?.message ?? error.toString()}`);
+    throw new Error(`At Signing in: ${error?.message ?? error.toString()}`);
   }
 }
 
@@ -36,6 +36,7 @@ export async function signUp(
     updateFormType("confirmSignUp");
   } catch (error) {
     console.log("error signing up: ", error);
+    throw new Error(`At signing up: ${error?.message ?? error.toString()}`);
   }
 }
 
