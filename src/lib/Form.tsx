@@ -60,12 +60,26 @@ export const Form = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(formState)]);
+  const onSignIn = useCallback(async () => {
+    updateFormState({ ...formState, isLoading: true });
+    try {
+      await signIn(formState, setUser);
+      updateFormState({ ...formState, isLoading: false });
+    } catch (error) {
+      console.log({ error });
+      updateFormState({ ...formState, errorMsg: error.toString() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formState)]);
+  const afterAlertClose = useCallback(async () => {
+    updateFormState(initialFormState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const renderForm = (): JSX.Element | null => {
     switch (formType) {
       case "signUp":
         return (
           <SignUp
-            // signUp={() => signUp(formState, updateFormType)}
             signUp={onSignUp}
             updateFormState={(e) => updateForm(e)}
             isLoading={formState.isLoading}
@@ -82,7 +96,8 @@ export const Form = ({
         return (
           <SignIn
             formState={formState}
-            signIn={() => signIn(formState, setUser)}
+            // signIn={() => signIn(formState, setUser)}
+            signIn={onSignIn}
             updateFormState={(e) => updateForm(e)}
           />
         );
@@ -106,11 +121,15 @@ export const Form = ({
         return null;
     }
   };
-
   return (
     <div>
       {formState.errorMsg?.length ? (
-        <Alert message={formState.errorMsg} type="error" />
+        <Alert
+          message={formState.errorMsg}
+          type="error"
+          closable={true}
+          afterClose={afterAlertClose}
+        />
       ) : null}
       {renderForm()}
       {formType === "signUp" && (

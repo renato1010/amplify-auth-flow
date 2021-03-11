@@ -5,3 +5,4 @@ export * from "./ForgotPasswordSubmit";
 export * from "./Form";
 export * from "./SignIn";
 export * from "./SignUp";
+export * from "./icon-utils";

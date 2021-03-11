@@ -21,7 +21,8 @@ export async function signIn(
     };
     setUser(userInfo);
   } catch (error) {
-    console.log("error signing up: ", error);
+    console.log("error signing in: ", error);
+    throw new Error(`Error signing in: ${error?.message ?? error.toString()}`);
   }
 }
 

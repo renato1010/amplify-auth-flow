@@ -1,6 +1,5 @@
 import { ChangeEvent } from "react";
-import { Button } from ".";
-import { styles } from ".";
+import { Button, styles, loadingIcon } from ".";
 import { FormStateType } from "./Form";
 
 type SignInPropsType = {
@@ -9,7 +8,7 @@ type SignInPropsType = {
   updateFormState: (evt: ChangeEvent<HTMLInputElement>) => void;
 };
 export const SignIn = ({
-  formState: { username, password },
+  formState: { username, password, isLoading },
   signIn,
   updateFormState,
 }: SignInPropsType) => {
@@ -38,7 +37,11 @@ export const SignIn = ({
         placeholder="password"
         autoComplete="new-password"
       />
-      <Button onClick={signIn} title="Sign In" />
+      <Button
+        onClick={signIn}
+        title="Sign In"
+        icon={isLoading ? loadingIcon : null}
+      />
     </div>
   );
 };

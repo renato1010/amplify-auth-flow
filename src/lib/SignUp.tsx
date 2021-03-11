@@ -1,7 +1,5 @@
 import { ChangeEvent } from "react";
-import { SyncOutlined } from "@ant-design/icons";
-import { Button } from ".";
-import { styles } from ".";
+import { Button, styles, loadingIcon } from ".";
 
 type SignUpPropsType = {
   signUp: () => void;
@@ -14,9 +12,6 @@ export const SignUp = ({
   updateFormState,
   isLoading,
 }: SignUpPropsType) => {
-  const loadingIcon = (
-    <SyncOutlined style={{ fontSize: 24, color: "white" }} spin />
-  );
   return (
     <div style={styles.container}>
       <input
