@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Auth, Hub } from "aws-amplify";
-import { Button } from "antd";
 import { Container } from ".";
-import { Form } from "../lib";
+import { Form, Button } from "../lib";
 
 export type CognitoUserInfo = {
   email: string;
@@ -40,9 +39,9 @@ export const Profile = () => {
       <Container>
         <h1>Profile</h1>
         <h2>Username: {user?.username ?? ""}</h2>
-        <h3>Email: {user?.phone_number ?? ""}</h3>
-        <h4>Phone: {user?.phone_number}</h4>
-        <Button onClick={signOut}>Sign Out</Button>
+        <h3>Email: {user?.email ?? ""}</h3>
+        <h4>Phone: {user?.phone_number ?? "not registered yet"}</h4>
+        <Button onClick={signOut} title="Sign Out" />
       </Container>
     );
   }

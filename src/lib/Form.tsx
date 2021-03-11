@@ -1,4 +1,5 @@
-import { ChangeEvent, CSSProperties, useState } from "react";
+import { ChangeEvent, CSSProperties, useCallback, useState } from "react";
+import { Alert } from "antd";
 import {
   SignIn,
   SignUp,
@@ -20,12 +21,16 @@ export type FormStateType = {
   password: string;
   email: string;
   confirmationCode: string;
+  isLoading?: boolean;
+  errorMsg?: string;
 };
 const initialFormState: FormStateType = {
   username: "",
   password: "",
   email: "",
   confirmationCode: "",
+  isLoading: false,
+  errorMsg: "",
 };
 export type FormType =
   | "signIn"
@@ -44,13 +49,26 @@ export const Form = ({
     const newFormState = { ...formState, [evt.target.name]: evt.target.value };
     updateFormState(newFormState);
   };
+  const onSignUp = useCallback(async () => {
+    updateFormState({ ...formState, isLoading: true });
+    try {
+      await signUp(formState, updateFormType);
+      updateFormState({ ...formState, isLoading: false });
+    } catch (error) {
+      console.log({ error });
+      updateFormState({ ...formState, errorMsg: error.toString() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formState)]);
   const renderForm = (): JSX.Element | null => {
     switch (formType) {
       case "signUp":
         return (
           <SignUp
-            signUp={() => signUp(formState, updateFormType)}
+            // signUp={() => signUp(formState, updateFormType)}
+            signUp={onSignUp}
             updateFormState={(e) => updateForm(e)}
+            isLoading={formState.isLoading}
           />
         );
       case "confirmSignUp":
@@ -91,6 +109,9 @@ export const Form = ({
 
   return (
     <div>
+      {formState.errorMsg?.length ? (
+        <Alert message={formState.errorMsg} type="error" />
+      ) : null}
       {renderForm()}
       {formType === "signUp" && (
         <p style={styles.toggleForm}>

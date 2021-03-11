@@ -7,8 +7,7 @@ export const Container = ({ children }: ContainerTypeProps) => {
 
 const styles = {
   container: {
-    margin: "0 auto",
+    margin: "auto auto",
     padding: "50px 100px",
   },
 };
-

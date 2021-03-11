@@ -1,13 +1,22 @@
 import { ChangeEvent } from "react";
+import { SyncOutlined } from "@ant-design/icons";
 import { Button } from ".";
 import { styles } from ".";
 
 type SignUpPropsType = {
   signUp: () => void;
   updateFormState: (evt: ChangeEvent<HTMLInputElement>) => void;
+  isLoading?: boolean;
 };
 
-export const SignUp = ({ signUp, updateFormState }: SignUpPropsType) => {
+export const SignUp = ({
+  signUp,
+  updateFormState,
+  isLoading,
+}: SignUpPropsType) => {
+  const loadingIcon = (
+    <SyncOutlined style={{ fontSize: 24, color: "white" }} spin />
+  );
   return (
     <div style={styles.container}>
       <input
@@ -38,7 +47,11 @@ export const SignUp = ({ signUp, updateFormState }: SignUpPropsType) => {
         style={styles.input}
         placeholder="email"
       />
-      <Button onClick={signUp} title="Sign Up" />
+      <Button
+        onClick={signUp}
+        icon={isLoading ? loadingIcon : null}
+        title="Sign Up"
+      />
     </div>
   );
 };

@@ -1,13 +1,15 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 type ButtonPropsType = {
   title: string;
   onClick: () => void;
+  icon?: ReactNode;
 };
-export const Button = ({ title, onClick }: ButtonPropsType) => {
+export const Button = ({ title, icon, onClick }: ButtonPropsType) => {
   return (
     <button style={styles.button} onClick={onClick}>
-      {title}
+      {icon}
+      {`  ${title}`}
     </button>
   );
 };
